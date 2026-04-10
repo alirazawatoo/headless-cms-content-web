@@ -26,10 +26,10 @@ const OUT_DIR = path.resolve(
   "seed"
 );
 
-const DEEP = "#082F55";
-const BLUE = "#0E5FA4";
-const TEAL = "#0F8F8F";
-const LIGHT = "#3E8FD4";
+const DEEP = "#12302A";
+const GREEN = "#1D5E52";
+const IODINE = "#A84A25";
+const LIGHT = "#3D8C7C";
 
 const frame = (body, background) => `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
@@ -61,10 +61,10 @@ const pieces = [
       <ellipse cx="600" cy="250" rx="430" ry="300" fill="#FFFFFF" opacity="0.22" filter="url(#haze)"/>
       <circle cx="600" cy="250" r="150" fill="#FFFFFF" opacity="0.85" filter="url(#soft)"/>
       <circle cx="600" cy="250" r="96" fill="#FFFFFF" opacity="0.95"/>
-      <path d="M0 620 Q300 520 600 600 T1200 560 L1200 800 L0 800 Z" fill="${TEAL}" opacity="0.5"/>
+      <path d="M0 620 Q300 520 600 600 T1200 560 L1200 800 L0 800 Z" fill="${IODINE}" opacity="0.5"/>
       <path d="M0 690 Q320 620 640 680 T1200 650 L1200 800 L0 800 Z" fill="${DEEP}" opacity="0.65"/>
       `,
-      [DEEP, BLUE]
+      [DEEP, GREEN]
     ),
   },
   {
@@ -76,10 +76,10 @@ const pieces = [
       <path d="M120 720 L700 300" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round"/>
       <path d="M700 300 L790 236 L812 268 L724 332 Z" fill="#FFFFFF" opacity="0.95"/>
       <path d="M1090 700 L560 340" stroke="${LIGHT}" stroke-opacity="0.95" stroke-width="14" stroke-linecap="round"/>
-      <circle cx="560" cy="340" r="26" fill="${TEAL}"/>
+      <circle cx="560" cy="340" r="26" fill="${IODINE}"/>
       <path d="M0 640 Q300 700 600 650 T1200 690 L1200 800 L0 800 Z" fill="${DEEP}" opacity="0.6"/>
       `,
-      [BLUE, DEEP]
+      [GREEN, DEEP]
     ),
   },
   {
@@ -91,12 +91,12 @@ const pieces = [
         <path d="M360 120 Q300 300 380 420 Q460 540 400 700" stroke-opacity="0.9" stroke-width="34"/>
         <path d="M820 120 Q880 300 800 420 Q720 540 780 700" stroke-opacity="0.55" stroke-width="34"/>
       </g>
-      <circle cx="590" cy="410" r="128" fill="${TEAL}" opacity="0.85"/>
+      <circle cx="590" cy="410" r="128" fill="${IODINE}" opacity="0.85"/>
       <circle cx="590" cy="410" r="128" fill="none" stroke="#FFFFFF" stroke-opacity="0.8" stroke-width="5"/>
       <rect x="566" y="180" width="48" height="230" rx="24" fill="#FFFFFF" opacity="0.92"/>
       <rect x="566" y="410" width="48" height="230" rx="24" fill="#FFFFFF" opacity="0.6"/>
       `,
-      [DEEP, "#0B4C86"]
+      [DEEP, "#174A40"]
     ),
   },
   {
@@ -114,7 +114,7 @@ const pieces = [
       </g>
       <circle cx="600" cy="400" r="420" fill="${DEEP}" opacity="0.28" filter="url(#haze)"/>
       `,
-      ["#0A3C68", TEAL]
+      ["#163F37", IODINE]
     ),
   },
   {
@@ -136,7 +136,7 @@ const pieces = [
           .join("")}
       </g>
       `,
-      [LIGHT, BLUE]
+      [LIGHT, GREEN]
     ),
   },
 ];

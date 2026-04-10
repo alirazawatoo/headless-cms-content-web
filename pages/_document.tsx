@@ -11,7 +11,7 @@ import type { ComponentProps, ComponentType, ReactElement } from "react";
 import type { EmotionCache } from "@emotion/react";
 import createEmotionServer from "@emotion/server/create-instance";
 import createEmotionCache from "lib/createEmotionCache";
-import theme from "theme";
+import theme, { GOOGLE_FONTS_URL } from "theme";
 
 type MyDocumentProps = DocumentInitialProps & {
   emotionStyleTags: ReactElement[];
@@ -31,6 +31,13 @@ export default class MyDocument extends Document<MyDocumentProps> {
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+          <link rel="stylesheet" href={GOOGLE_FONTS_URL} />
           {this.props.emotionStyleTags}
         </Head>
         <body>

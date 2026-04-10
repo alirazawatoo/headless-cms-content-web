@@ -3,6 +3,7 @@ import Image from "next/image";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import type { CmsImage as CmsImageData } from "lib/cms/blocks";
+import { SURFACE_TINT } from "theme";
 
 /** Aspect ratio used when the CMS does not report intrinsic dimensions. */
 export const DEFAULT_ASPECT_RATIO = 3 / 2;
@@ -46,8 +47,8 @@ const CmsImage = ({
         // Percentage padding reserves the exact box before the image loads.
         pt: `${(100 / ratio).toFixed(4)}%`,
         overflow: "hidden",
-        borderRadius: rounded ? 3 : 0,
-        bgcolor: "grey.100",
+        borderRadius: rounded ? 1 : 0,
+        bgcolor: SURFACE_TINT,
         "& img": {
           transition: "opacity 400ms ease",
           opacity: loaded ? 1 : 0,

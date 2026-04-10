@@ -15,7 +15,7 @@ const EmptyState = () => (
           textAlign: "center",
           border: 1,
           borderColor: "divider",
-          borderRadius: 4,
+          borderRadius: 2,
           px: { xs: 3, md: 6 },
           py: { xs: 5, md: 8 },
         }}

@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import { FOOTER_BACKGROUND } from "theme";
 
 const CHALLENGE_REPO =
   "https://github.com/jomijournal/jomi-cms-challenge-backend";
@@ -14,7 +15,7 @@ const PageFooter = () => (
   <Box
     component="footer"
     sx={{
-      bgcolor: "#0B1B2B",
+      bgcolor: FOOTER_BACKGROUND,
       color: "rgba(255,255,255,0.72)",
       py: { xs: 5, md: 6 },
       px: 2,

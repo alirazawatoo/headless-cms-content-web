@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import type { HeaderBlock as HeaderBlockData } from "lib/cms/blocks";
+import { HERO_BACKGROUND } from "theme";
 import { defineBlock, type BlockProps } from "./registry";
 
 /**
@@ -20,14 +21,16 @@ const HeaderBlock = ({ block, index }: BlockProps<HeaderBlockData>) => (
       px: 2,
       py: { xs: 9, md: 15 },
       textAlign: "center",
-      backgroundImage:
-        "linear-gradient(135deg, #082F55 0%, #0E5FA4 55%, #0F8F8F 130%)",
+      bgcolor: HERO_BACKGROUND,
+      borderBottom: 4,
+      borderColor: "secondary.main",
+      // A warm pool of light from above, like an operating lamp over the field.
       "&::after": {
         content: '""',
         position: "absolute",
         inset: 0,
         backgroundImage:
-          "radial-gradient(60% 70% at 20% 0%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%)",
+          "radial-gradient(55% 80% at 50% -15%, rgba(255,240,214,0.2) 0%, rgba(255,240,214,0) 70%)",
         pointerEvents: "none",
       },
     }}
@@ -50,7 +53,9 @@ const HeaderBlock = ({ block, index }: BlockProps<HeaderBlockData>) => (
           sx={{
             bgcolor: "common.white",
             color: "primary.dark",
-            "&:hover": { bgcolor: "grey.100" },
+            "&:hover": { bgcolor: "#F4EFE6" },
+            // The theme's green ring disappears against the dark band.
+            "&:focus-visible": { outlineColor: "common.white" },
           }}
         >
           {block.action.label}

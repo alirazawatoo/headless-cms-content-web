@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import type { CarouselBlock as CarouselBlockData } from "lib/cms/blocks";
-import { sectionSurface } from "theme";
+import { INDICATOR_IDLE, sectionSurface } from "theme";
 import TwoColumnContent from "./TwoColumnContent";
 import { defineBlock, type BlockProps } from "./registry";
 
@@ -120,7 +120,7 @@ const CarouselBlock = ({ block, index }: BlockProps<CarouselBlockData>) => {
                   bgcolor: surface.card,
                   border: 1,
                   borderColor: "divider",
-                  borderRadius: 4,
+                  borderRadius: 2,
                   p: { xs: 3, md: 5 },
                   height: "100%",
                 }}
@@ -137,20 +137,32 @@ const CarouselBlock = ({ block, index }: BlockProps<CarouselBlockData>) => {
           justifyContent="space-between"
           sx={{ mt: 3 }}
         >
-          <Stack direction="row" spacing={1} component="div">
+          <Stack direction="row" component="div">
             {block.items.map((item, slideIndex) => (
               <ButtonBase
                 key={item.id}
                 onClick={() => scrollToSlide(slideIndex)}
                 aria-label={`Show slide ${slideIndex + 1} of ${slideCount}`}
                 aria-current={slideIndex === activeIndex ? "true" : undefined}
+                // The visible dot is small, but the button around it keeps the
+                // 24px minimum target size for touch and pointer users.
                 sx={{
-                  width: slideIndex === activeIndex ? 28 : 10,
-                  height: 10,
+                  minWidth: 24,
+                  height: 24,
+                  px: 0.5,
                   borderRadius: 999,
-                  transition: "width 200ms ease, background-color 200ms ease",
-                  bgcolor:
-                    slideIndex === activeIndex ? "primary.main" : "divider",
+                  "&::before": {
+                    content: '""',
+                    display: "block",
+                    width: slideIndex === activeIndex ? 28 : 10,
+                    height: 10,
+                    borderRadius: 999,
+                    transition: "width 200ms ease, background-color 200ms ease",
+                    bgcolor:
+                      slideIndex === activeIndex
+                        ? "primary.main"
+                        : INDICATOR_IDLE,
+                  },
                 }}
               />
             ))}
