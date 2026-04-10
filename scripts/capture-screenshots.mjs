@@ -114,6 +114,10 @@ const main = async () => {
           );
 
           for (const track of tracks) {
+            // Lazy images only load near the viewport, so a track swept while
+            // it sits below the fold never loads its off-screen slides.
+            track.scrollIntoView({ block: "center" });
+            await pause();
             const slides = Math.ceil(track.scrollWidth / track.clientWidth);
             for (let slide = 0; slide < slides; slide += 1) {
               track.scrollLeft = slide * track.clientWidth;
@@ -122,6 +126,11 @@ const main = async () => {
             track.scrollLeft = 0;
             await pause();
           }
+
+          // `scroll-behavior: smooth` on <html> would otherwise animate this
+          // and the "top" shots would catch the page mid-scroll.
+          window.scrollTo({ top: 0, behavior: "instant" });
+          await pause();
         });
 
       // A page with no media means the server rendered the empty state (a
