@@ -13,6 +13,23 @@ import TwoColumnContent from "./TwoColumnContent";
 import { defineBlock, type BlockProps } from "./registry";
 
 /**
+ * Index of the slide whose left edge is closest to the track's scroll
+ * position. The track is the slides' offset parent, so `offsetLeft` is
+ * measured from its scroll origin and already includes the gaps.
+ */
+function nearestSlide(track: HTMLElement): number {
+  const slides = Array.from(track.children) as HTMLElement[];
+  let nearest = 0;
+  slides.forEach((slide, slideIndex) => {
+    const distance = Math.abs(slide.offsetLeft - track.scrollLeft);
+    if (distance < Math.abs(slides[nearest].offsetLeft - track.scrollLeft)) {
+      nearest = slideIndex;
+    }
+  });
+  return nearest;
+}
+
+/**
  * A scroll-snap carousel over the block's items.
  *
  * The track is a plain horizontally scrollable element, so it works with touch,
@@ -29,11 +46,10 @@ const CarouselBlock = ({ block, index }: BlockProps<CarouselBlockData>) => {
 
   const syncActiveIndex = useCallback(() => {
     const track = trackRef.current;
-    if (!track || track.clientWidth === 0) return;
+    if (!track) return;
 
-    const next = Math.round(track.scrollLeft / track.clientWidth);
-    setActiveIndex(Math.max(0, Math.min(slideCount - 1, next)));
-  }, [slideCount]);
+    setActiveIndex(nearestSlide(track));
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -50,7 +66,10 @@ const CarouselBlock = ({ block, index }: BlockProps<CarouselBlockData>) => {
       setActiveIndex(clamped);
       if (!track) return;
 
-      const left = clamped * track.clientWidth;
+      // Slides sit one track-width plus the flex gap apart, so the offset is
+      // read from the slide itself rather than derived from the track width.
+      const slide = track.children[clamped] as HTMLElement | undefined;
+      const left = slide?.offsetLeft ?? 0;
       // jsdom and older browsers have no smooth `scrollTo`.
       if (typeof track.scrollTo === "function") {
         track.scrollTo({ left, behavior: "smooth" });
@@ -74,6 +93,7 @@ const CarouselBlock = ({ block, index }: BlockProps<CarouselBlockData>) => {
         <Box
           ref={trackRef}
           sx={{
+            position: "relative",
             display: "flex",
             gap: { xs: 2, md: 4 },
             overflowX: "auto",
