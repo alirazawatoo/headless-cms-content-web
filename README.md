@@ -16,7 +16,7 @@ This repository is the front-end half only.
 > **What is this repository's own.** `jomijournal/jomi-challenge-frontend` is a
 > repository you fork, not an empty one: the Apollo plumbing, the codegen
 > config, `graphql/types.tsx`, the Jest wiring and stubbed block components with
-> `//TODO` markers all came with it. Sixteen of the fifty-seven tracked files
+> `//TODO` markers all came with it. Sixteen of the sixty tracked files
 > outside `public/` and `docs/` descend from that starter, and one of them —
 > `graphql/types.tsx`, 508 lines of codegen output from JOMI's schema — is
 > untouched. Nothing outside the brief was invented: widening an interview
@@ -59,7 +59,7 @@ To point it at a real CMS, put `CMS_SOURCE=strapi` and `STRAPI_URL` in a `.env`
 next to `docker-compose.yml` and rebuild — the homepage is prerendered at build
 time, so the source is chosen then.
 
-Without Docker:
+Without Docker, on Node 22 (`.nvmrc`; Node 24 also works) and Yarn 1:
 
 ```bash
 yarn install
@@ -84,6 +84,29 @@ shots are 1440x900, mobile is 390x844.
 The artwork is generated, not stock photography — `scripts/generate-seed-art.mjs`
 draws it from the theme palette, which keeps the repository free of licensing
 questions.
+
+Both scripts need Playwright's Chromium. Without installing it locally, run
+them in the matching Playwright image on a production build:
+
+```bash
+docker run --rm -v "$PWD":/app -w /app mcr.microsoft.com/playwright:v1.63.0-noble \
+  sh -c 'yarn install --frozen-lockfile && CMS_SOURCE=fixture yarn build && yarn screenshots'
+```
+
+### Look and feel
+
+JOMI publishes filmed surgery as a peer-reviewed journal, so the page borrows
+from print rather than from a product landing page: Newsreader, an editorial
+serif, for headings; Public Sans for body copy; scrub green as the working
+colour, an iodine orange as the one accent, and warm paper behind alternating
+sections. The header band is flat dark green with a single pool of light from
+above, like a theatre lamp. Every token lives in `theme/index.ts`, and the text
+and control colours were checked against WCAG AA (body text at least 6:1,
+carousel indicators at least 3:1).
+
+Both families load from Google Fonts with `display=swap`, behind system
+fallbacks of similar proportions, so text renders immediately and a blocked
+font request only changes the face.
 
 ## From the dynamic zone to HTML
 
@@ -207,7 +230,7 @@ components/ui/       CmsImage: next/image with a reserved box and per-breakpoint
 lib/cms/             blocks.ts (view models) · mapHomePage.ts (trust boundary) ·
                      homePage.ts (source + revalidate) · strapi.ts (server-only client) ·
                      fixtures.ts (deterministic sample payload, in Strapi's own shape)
-theme/index.ts       typography, palette, focus ring, alternating section surfaces
+theme/index.ts       fonts, palette, focus ring, alternating section surfaces
 pages/               _document.tsx (server-side Emotion extraction), _app.tsx, index.tsx
 scripts/             screenshot capture, seed artwork, PNG optimiser
 ```
@@ -221,18 +244,21 @@ needs before it will swap in a real source.
 ```
 $ yarn test
 Test Suites: 13 passed, 13 total
-Tests:       126 passed, 126 total
-Time:        2.364 s
+Tests:       130 passed, 130 total
+Time:        2.527 s
 ```
 
 ## Known gaps
 
 - **One route.** The brief is the `homePage` single type, so there is no
   routing, no article page and no search.
-- **The Docker image has not been built here.** `docker compose config` parses
-  and the Dockerfile is maintained alongside the rest, but the image was never
-  built or booted in this environment. Treat that path as reviewed, not
-  smoke-tested.
+- **Next.js 12 and React 17.** Both are on their last release line. Moving to
+  Next 13+ means migrating every `next/image` call off the legacy
+  `layout`/`objectFit` props and taking React 18 with it, which is a deliberate
+  change of its own rather than a dependency bump.
+- **Fonts come from Google at runtime.** Self-hosting them would remove the
+  third-party request; `next/font`, which would do that automatically, needs
+  Next 13.
 - **No CSP.** MUI and Emotion inject styles at runtime, so a useful policy needs
   a nonce plumbed through `_document`. The other standard headers
   (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
@@ -249,3 +275,7 @@ Time:        2.364 s
   keyboard before any JavaScript runs — deliberate, but a difference from most
   marketing carousels. The CMS component carries no presentation settings at
   all, so every one of those choices is made here.
+
+## Licence
+
+MIT — see [`LICENSE`](LICENSE).
