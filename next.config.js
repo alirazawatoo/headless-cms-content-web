@@ -34,9 +34,7 @@ const nextConfig = {
   // Produces .next/standalone: a self-contained server plus only the
   // node_modules it actually requires, which is what the runtime Docker stage
   // copies. See Dockerfile.
-  experimental: {
-    outputStandalone: true,
-  },
+  output: "standalone",
   // No CMS variable is inlined into the browser bundle. The homepage is built
   // on the server (`getStaticProps`), so `STRAPI_URL` and `STRAPI_TOKEN` stay
   // server-side and the client never learns the CMS address.

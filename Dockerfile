@@ -4,7 +4,7 @@
 # the source tree: only the standalone server Next.js emits and the static
 # assets it serves.
 
-FROM node:18-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json yarn.lock ./
 # Playwright is a devDependency used only by the screenshot and seed-art
@@ -13,7 +13,7 @@ ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 RUN yarn install --frozen-lockfile
 
 
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 
@@ -27,11 +27,11 @@ ENV CMS_SOURCE=$CMS_SOURCE
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# `experimental.outputStandalone` in next.config.js produces .next/standalone.
+# `output: "standalone"` in next.config.js produces .next/standalone.
 RUN yarn build
 
 
-FROM node:18-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production \
